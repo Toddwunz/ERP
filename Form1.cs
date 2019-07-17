@@ -47,11 +47,13 @@ namespace ERP
                 }
                 TotalLab2.Text = Total2.ToString();
             }
+
+            GroupBox3filling();
         }
 
         public void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-           
+
             if ((e.KeyChar < 48 || e.KeyChar > 57) && e.KeyChar != 8 && e.KeyChar != 9 && e.KeyChar != 13 && e.KeyChar != '.' && e.KeyChar != '-')
             {
                 MessageBox.Show("请输入正确的数字");
@@ -95,11 +97,11 @@ namespace ERP
             string connectionString = ConfigurationManager.ConnectionStrings["ERPDB"].ToString();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-               
+
                 connection.Open();
                 SqlCommand sqlCmd = new SqlCommand("SELECT * FROM dbo.cost_class", connection);
                 SqlDataReader sqlReader = sqlCmd.ExecuteReader();
-                ComboBox[] comboxCostType = new ComboBox[] {comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
+                ComboBox[] comboxCostType = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
 
                 while (sqlReader.Read())
                 {
@@ -121,16 +123,74 @@ namespace ERP
             }
         }
 
-        public void datafilling()
+        public void GroupBox3filling()
         {
             
-        } 
+            this.groupBox3.Controls.Clear();
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.dateTimeLable);
+            string sqlTotalQty = "SELECT sum(total_qty) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '2019-05-11'";
+            string sqlTotalPer = "SELECT count(*) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='2019-05-11'";
+            int n = 2;
+            TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9 };
+            ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
+            Label[] labelGroup3 = new Label[n];
+
+            foreach (Control TxtBox in this.groupBox2.Controls)
+            {
+                if (TxtBox is TextBox && TxtBox.Text != "0")
+                {
+                    n += 1;
+                }
+            }
+            
+            for (int i = 0; i < n-1; i++)
+            {
+                labelGroup3[i] = new Label();
+                if (i == n - 1)
+                {
+                    labelGroup3[i].Location = new System.Drawing.Point(13, 80 + i * 25);
+                    labelGroup3[i].Size = new Size(333, 25);
+                    labelGroup3[i].Text = "-------------------------------------------------------------------------------------------------------------------------";
+                    this.groupBox3.Controls.Add(labelGroup3[i]);
+                }
+                else
+                {
+                    labelGroup3[i].Location = new System.Drawing.Point(90, 80 + i * 25);
+                    labelGroup3[i].Size = new Size(250, 25);
+                    if (i == 1)
+                    {
+                        labelGroup3[i].Text = txGroup2[i].Text + " (" +Controller.DataGeting(sqlTotalQty) +"KG, " + Controller.DataGeting(sqlTotalPer) + "PP" + ")";
+                    }
+                    else
+                    {
+                        labelGroup3[i].Text = txGroup2[i].Text + " (" + combGroup2[i].SelectedItem + ")";
+                    }
+                    this.groupBox3.Controls.Add(labelGroup3[i]);
+                }
+            }
+            int m = labelGroup3.Length;
+           // dateTimeLable.p = labelGroup3[m - 1].Location;
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'db_justposrecycDataSet.cost_class' table. You can move, or remove it, as needed.
             ComboBoxFilling();
-        }
+            this.dateTimeLable.Text = DateTime.Today.ToString("D");
+            // DataBase data collecting 
+            string connectionString = ConfigurationManager.ConnectionStrings["ERPDB"].ToString();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
 
+                connection.Open();
+                SqlCommand sqlCmd = new SqlCommand("SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='2019-05-11';", connection);
+                SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                while (sqlReader.Read())
+                    this.textBox2.Text = "-" + sqlReader["Total"].ToString();
+                sqlReader.Close();
+            }
+        }
     }
 }

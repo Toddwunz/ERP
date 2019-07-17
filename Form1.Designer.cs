@@ -30,7 +30,6 @@ namespace ERP
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DateTimePicker dateTimePicker1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.TotalLab = new System.Windows.Forms.Label();
@@ -65,19 +64,11 @@ namespace ERP
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ERPprintDocument = new System.Drawing.Printing.PrintDocument();
             this.ERPprintPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
-            dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimeLable = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.Location = new System.Drawing.Point(149, 10);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            dateTimePicker1.TabIndex = 14;
-            dateTimePicker1.Value = new System.DateTime(2019, 7, 13, 23, 38, 10, 487);
             // 
             // groupBox1
             // 
@@ -346,8 +337,8 @@ namespace ERP
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.dateTimeLable);
             this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(dateTimePicker1);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Location = new System.Drawing.Point(603, 12);
             this.groupBox3.Name = "groupBox3";
@@ -365,6 +356,14 @@ namespace ERP
             this.ERPprintPreviewDialog.Icon = ((System.Drawing.Icon)(resources.GetObject("ERPprintPreviewDialog.Icon")));
             this.ERPprintPreviewDialog.Name = "ERPprintPreviewDialog";
             this.ERPprintPreviewDialog.Visible = false;
+            // 
+            // dateTimeLable
+            // 
+            this.dateTimeLable.AutoSize = true;
+            this.dateTimeLable.Location = new System.Drawing.Point(215, 10);
+            this.dateTimeLable.Name = "dateTimeLable";
+            this.dateTimeLable.Size = new System.Drawing.Size(0, 13);
+            this.dateTimeLable.TabIndex = 18;
             // 
             // Form1
             // 
@@ -423,6 +422,7 @@ namespace ERP
         private GroupBox groupBox3;
         private System.Drawing.Printing.PrintDocument ERPprintDocument;
         private PrintPreviewDialog ERPprintPreviewDialog;
+        private Label dateTimeLable;
     }
 }
 
