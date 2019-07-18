@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,9 +15,9 @@ namespace ERP
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+           Application.EnableVisualStyles();
+           Application.SetCompatibleTextRenderingDefault(false);
+           Application.Run(new Form1());  
         }
     }
 }

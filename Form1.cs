@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace ERP
 {
     public partial class Form1 : Form
     {
+        Formatting FmaFloat = new Formatting();
         public Form1()
         {
             InitializeComponent();
@@ -32,9 +34,11 @@ namespace ERP
                     float Value = float.Parse(TxtBox.Text);
                     int TBindex = TxtBox.TabIndex;
                     Total += Value * notes[TBindex];
+                    if (TBindex == 10) { CoinLabel.Text = "Coin : " + TxtBox.Text; }
                 }
-                TotalLab.Text = Total.ToString();
             }
+            CashLabel.Text = "Cash : " + (Total -FmaFloat.converting(CoinLabel.Text) ).ToString();
+            TotalLab.Text = "Total: " + Total.ToString();
 
             float Total2 = 0;
             foreach (Control TxtBox2 in this.groupBox2.Controls)
@@ -45,9 +49,8 @@ namespace ERP
                     float Value2 = float.Parse(TxtBox2.Text);
                     Total2 += Value2;
                 }
-                TotalLab2.Text = Total2.ToString();
+                TotalLab2.Text = "Total: " + Total2.ToString();
             }
-
             GroupBox3filling();
         }
 
@@ -79,8 +82,8 @@ namespace ERP
                 textBoxes[i] = new TextBox();
                 labels[i].Parent = groupBox1;
                 textBoxes[i].Parent = groupBox1;
-                labels[i].Location = new System.Drawing.Point(9, 20 + i * 35);
-                textBoxes[i].Location = new System.Drawing.Point(40, 20 + i * 35);
+                labels[i].Location = new System.Drawing.Point(9, 40 + i * 35);
+                textBoxes[i].Location = new System.Drawing.Point(40, 40 + i * 35);
                 labels[i].Size = new Size(30, 20);
                 textBoxes[i].Size = new Size(100, 20);
                 labels[i].Text = strnotes[i];
@@ -132,11 +135,10 @@ namespace ERP
             this.groupBox3.Controls.Add(this.dateTimeLable);
             string sqlTotalQty = "SELECT sum(total_qty) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '2019-05-11'";
             string sqlTotalPer = "SELECT count(*) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='2019-05-11'";
-            int n = 2;
             TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9 };
             ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
-            Label[] labelGroup3 = new Label[n];
 
+            int n = 0;
             foreach (Control TxtBox in this.groupBox2.Controls)
             {
                 if (TxtBox is TextBox && TxtBox.Text != "0")
@@ -144,34 +146,58 @@ namespace ERP
                     n += 1;
                 }
             }
+
+            List<Label> labelG3lst = new List<Label>();
             
-            for (int i = 0; i < n-1; i++)
+
+            for (int i = 0; i < n; i++)
             {
-                labelGroup3[i] = new Label();
-                if (i == n - 1)
+                Label labelitem = new Label();
+                labelG3lst.Add(labelitem);
+                labelG3lst[i].Location = new System.Drawing.Point(90, 45 + i * 20);
+                labelG3lst[i].Size = new Size(250, 20);
+                if (i == 1)
                 {
-                    labelGroup3[i].Location = new System.Drawing.Point(13, 80 + i * 25);
-                    labelGroup3[i].Size = new Size(333, 25);
-                    labelGroup3[i].Text = "-------------------------------------------------------------------------------------------------------------------------";
-                    this.groupBox3.Controls.Add(labelGroup3[i]);
+                    labelG3lst[i].Text = txGroup2[i].Text + " (" +Controller.DataGeting(sqlTotalQty) +"KG, " + Controller.DataGeting(sqlTotalPer) + "PP" + ")";
                 }
                 else
                 {
-                    labelGroup3[i].Location = new System.Drawing.Point(90, 80 + i * 25);
-                    labelGroup3[i].Size = new Size(250, 25);
-                    if (i == 1)
-                    {
-                        labelGroup3[i].Text = txGroup2[i].Text + " (" +Controller.DataGeting(sqlTotalQty) +"KG, " + Controller.DataGeting(sqlTotalPer) + "PP" + ")";
-                    }
-                    else
-                    {
-                        labelGroup3[i].Text = txGroup2[i].Text + " (" + combGroup2[i].SelectedItem + ")";
-                    }
-                    this.groupBox3.Controls.Add(labelGroup3[i]);
+                    labelG3lst[i].Text = txGroup2[i].Text + " (" + combGroup2[i].SelectedItem + ")";
                 }
+                labelG3lst[i].TextAlign = ContentAlignment.MiddleLeft;
+                this.groupBox3.Controls.Add(labelG3lst[i]);
             }
-            int m = labelGroup3.Length;
-           // dateTimeLable.p = labelGroup3[m - 1].Location;
+            string _line = "-----------------------------------------------------------------------------------------------------------";
+            string _shortline = "--------------------------";
+
+            float theoryMoney = FmaFloat.converting(TotalLab2.Text);
+            float realMoney = FmaFloat.converting(TotalLab.Text);
+            float blnResult = realMoney - theoryMoney;
+            float ysDiff = -230.56f;
+            float toDiff = blnResult - ysDiff;
+
+            List<string> valuelst = new List<string>() { _line,TotalLab2.Text, "实剩",_line,CashLabel.Text,CoinLabel.Text, _shortline, realMoney.ToString("#0.00"), "-" + theoryMoney.ToString("#0.00"), _shortline, blnResult.ToString("#0.00"),ysDiff.ToString("#0.00"),_shortline,toDiff.ToString("#0.00") };
+
+            for (int i = 0; i < valuelst.Count(); i++)
+            {
+                Label G3LabelTotal = new Label();
+                labelG3lst.Add(G3LabelTotal);
+                int m = labelG3lst.Count() - 1;
+                labelG3lst[m].Location = new System.Drawing.Point(13, 45 + m * 20);
+                labelG3lst[m].Size = new Size(333, 20);
+                labelG3lst[m].Text = valuelst[i];
+                if (labelG3lst[m].Text == "实剩")
+                {
+                    labelG3lst[m].TextAlign = ContentAlignment.TopLeft;
+                }
+                else
+                {
+                  labelG3lst[m].TextAlign = ContentAlignment.MiddleCenter;
+                }
+                this.groupBox3.Controls.Add(labelG3lst[m]);
+            }
+
+                
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -192,5 +218,35 @@ namespace ERP
                 sqlReader.Close();
             }
         }
+
+        private void BtnPrintPreview_Click(object sender, EventArgs e)
+        {
+            ERPprintPreviewDialog.Document = ERPprintDocument;
+            ERPprintPreviewDialog.ShowDialog();
+        }
+
+        private void BtnPrint_Click(object sender, EventArgs e)
+        {
+            //ERPprintDocument.Print();
+            PrintDocument doc = new PrintDocument();
+            doc.PrintPage += this.Doc_PrintPage;
+            PrintDialog dlgSettings = new PrintDialog();
+            dlgSettings.Document = doc;
+            if (dlgSettings.ShowDialog() == DialogResult.OK)
+            {
+                doc.Print();
+            }
+        }
+
+         private void Doc_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            float x = e.MarginBounds.Left;
+            float y = e.MarginBounds.Top;
+            Bitmap bmp = new Bitmap(this.groupBox3.Width + this.groupBox1.Width, this.groupBox3.Height);
+            this.groupBox1.DrawToBitmap(bmp, new Rectangle(0, 0, this.groupBox1.Width, this.groupBox1.Height));
+            this.groupBox3.DrawToBitmap(bmp, new Rectangle(this.groupBox1.Width, 0, this.groupBox1.Width + this.groupBox3.Width, this.groupBox3.Height));
+            e.Graphics.DrawImage((Image)bmp, e.PageBounds);
+        }
+
     }
 }
