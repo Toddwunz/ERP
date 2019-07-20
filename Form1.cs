@@ -46,6 +46,7 @@ namespace ERP
                 if (TxtBox2 is TextBox)
                 {
                     if (TxtBox2.Text == "") { TxtBox2.Text = "0"; }
+                    //TxtBox2.Text = FmaFloat.converting(TxtBox2.Text).ToString();
                     float Value2 = float.Parse(TxtBox2.Text);
                     Total2 += Value2;
                 }
@@ -115,8 +116,8 @@ namespace ERP
                     }
                 }
                 sqlReader.Close();
-                this.comboBox1.Items.Add("Balance of yesterday");
-                this.comboBox2.Items.Add("Today Purchese ");
+               // this.comboBox1.Items.Add("Balance of yesterday");
+               // this.comboBox2.Items.Add("Today Purchese ");
                 for (int i = 0; i < comboxCostType.Length; i++)
                 {
                     comboxCostType[i].DisplayMember = "cost_name";
@@ -149,7 +150,6 @@ namespace ERP
 
             List<Label> labelG3lst = new List<Label>();
             
-
             for (int i = 0; i < n; i++)
             {
                 Label labelitem = new Label();
@@ -158,22 +158,23 @@ namespace ERP
                 labelG3lst[i].Size = new Size(250, 20);
                 if (i == 1)
                 {
-                    labelG3lst[i].Text = txGroup2[i].Text + " (" +Controller.DataGeting(sqlTotalQty) +"KG, " + Controller.DataGeting(sqlTotalPer) + "PP" + ")";
+                    labelG3lst[i].Text = txGroup2[i].Text + " (" +Controller.DataGeting(sqlTotalQty,0) +"KG, " + Controller.DataGeting(sqlTotalPer,0) + "PP" + ")";
                 }
                 else
                 {
-                    labelG3lst[i].Text = txGroup2[i].Text + " (" + combGroup2[i].SelectedItem + ")";
+                    labelG3lst[i].Text = txGroup2[i].Text + " (" + combGroup2[i].Text + ")";
                 }
                 labelG3lst[i].TextAlign = ContentAlignment.MiddleLeft;
                 this.groupBox3.Controls.Add(labelG3lst[i]);
             }
             string _line = "-----------------------------------------------------------------------------------------------------------";
-            string _shortline = "--------------------------";
+            string _shortline = "-------------------------------------------------";
 
             float theoryMoney = FmaFloat.converting(TotalLab2.Text);
             float realMoney = FmaFloat.converting(TotalLab.Text);
             float blnResult = realMoney - theoryMoney;
-            float ysDiff = -230.56f;
+            string ysdiffsql = "select top 1 difference from dailyBalance order by id desc";
+            float ysDiff =float.Parse(Controller.DataGeting(ysdiffsql,0));
             float toDiff = blnResult - ysDiff;
 
             List<string> valuelst = new List<string>() { _line,TotalLab2.Text, "实剩",_line,CashLabel.Text,CoinLabel.Text, _shortline, realMoney.ToString("#0.00"), "-" + theoryMoney.ToString("#0.00"), _shortline, blnResult.ToString("#0.00"),ysDiff.ToString("#0.00"),_shortline,toDiff.ToString("#0.00") };
@@ -204,19 +205,15 @@ namespace ERP
         {
             // TODO: This line of code loads data into the 'db_justposrecycDataSet.cost_class' table. You can move, or remove it, as needed.
             ComboBoxFilling();
+            // dateTime lable initialization
             this.dateTimeLable.Text = DateTime.Today.ToString("D");
-            // DataBase data collecting 
-            string connectionString = ConfigurationManager.ConnectionStrings["ERPDB"].ToString();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-
-                connection.Open();
-                SqlCommand sqlCmd = new SqlCommand("SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='2019-05-11';", connection);
-                SqlDataReader sqlReader = sqlCmd.ExecuteReader();
-                while (sqlReader.Read())
-                    this.textBox2.Text = "-" + sqlReader["Total"].ToString();
-                sqlReader.Close();
-            }
+            //yesterday balance initialization
+            string yesBalancesql = "select top 1 [theoryMoney] from dailyBalance order by id desc";
+            this.textBox1.Text = Controller.DataGeting(yesBalancesql, 0);
+            // Today total purchase initialization
+            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
+            string tdtotalsql = "SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
+            this.textBox2.Text = float.Parse("-" + Controller.DataGeting(tdtotalsql,0)).ToString();
         }
 
         private void BtnPrintPreview_Click(object sender, EventArgs e)
@@ -234,6 +231,8 @@ namespace ERP
             dlgSettings.Document = doc;
             if (dlgSettings.ShowDialog() == DialogResult.OK)
             {
+                ComboxNewItemCreating();
+                DatabaseUpdate();
                 doc.Print();
             }
         }
@@ -246,6 +245,45 @@ namespace ERP
             this.groupBox1.DrawToBitmap(bmp, new Rectangle(0, 0, this.groupBox1.Width, this.groupBox1.Height));
             this.groupBox3.DrawToBitmap(bmp, new Rectangle(this.groupBox1.Width, 0, this.groupBox1.Width + this.groupBox3.Width, this.groupBox3.Height));
             e.Graphics.DrawImage((Image)bmp, e.PageBounds);
+        }
+
+        private void ComboxNewItemCreating()
+        {
+            foreach (Control combox in this.groupBox2.Controls)
+            {
+                if (combox is ComboBox)
+                {
+                    string costName = combox.Text;
+                    string sqlstr = "select * from dbo.cost_class where cost_name='" + costName + "'";
+                    if (Controller.DataGeting(sqlstr, 1) == "Empty")
+                    {
+                        Controller.DataInsert("INSERT INTO dbo.cost_class (cost_name) VALUES ('" + combox.Text + "')");
+                    }
+                }
+            }
+        }
+
+        private void DatabaseUpdate()
+        {
+            // dailyBalance Table update
+            float tMoney = FmaFloat.converting(TotalLab.Text);
+            float rMoney = FmaFloat.converting(TotalLab2.Text);
+            float diff = rMoney - tMoney;
+            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
+            string sqlBalance = "INSERT INTO dbo.dailyBalance(theoryMoney,realMoney,difference,balancedate) VALUES('" + tMoney +"','" + rMoney + "','" + diff + "','" + createdDate +"')";
+            Controller.DataInsert(sqlBalance);
+            //Cost Table update
+            TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9 };
+            ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
+            for (int i = 0; i < 9; i++)
+            {
+                if (txGroup2[i].Text != "0")
+                {
+                    string sqlCost = "INSERT INTO dbo.cost(cost_amount,cost_name,date) VALUES('" + float.Parse(txGroup2[i].Text) + "','" + combGroup2[i].Text + "','" + createdDate + "')";
+                    Controller.DataInsert(sqlCost);
+                }
+            }
+
         }
 
     }

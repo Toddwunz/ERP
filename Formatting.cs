@@ -15,8 +15,15 @@ namespace ERP
             // 如果是数字，则转换为decimal类型
             if (Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))
             {
-                float result = float.Parse(str);
-                return result;
+                try
+                {
+                    float result = float.Parse(str);
+                    return result;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
             }
             else { return 0; }
         }
