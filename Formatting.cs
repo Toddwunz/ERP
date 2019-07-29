@@ -11,7 +11,7 @@ namespace ERP
     {
         public float converting(string str)
         {
-            str = Regex.Replace(str, @"[^\d.\d]", "");
+            str = Regex.Replace(str, @"[^-?\d.\d]", "");
             // 如果是数字，则转换为decimal类型
             if (Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))
             {

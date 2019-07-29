@@ -37,8 +37,8 @@ namespace ERP
                     if (TBindex == 10) { CoinLabel.Text = "Coin : " + TxtBox.Text; }
                 }
             }
-            CashLabel.Text = "Cash : " + (Total -FmaFloat.converting(CoinLabel.Text) ).ToString();
-            TotalLab.Text = "Total: " + Total.ToString();
+            CashLabel.Text = "Cash : " + (Total - FmaFloat.converting(CoinLabel.Text) ).ToString();
+            TotalLab.Text = "Total: " + Total.ToString("#0.00");
 
             float Total2 = 0;
             foreach (Control TxtBox2 in this.groupBox2.Controls)
@@ -50,7 +50,7 @@ namespace ERP
                     float Value2 = float.Parse(TxtBox2.Text);
                     Total2 += Value2;
                 }
-                TotalLab2.Text = "Total: " + Total2.ToString();
+                TotalLab2.Text = "Total: " + Total2.ToString("#0.00");
             }
             GroupBox3filling();
         }
@@ -61,7 +61,6 @@ namespace ERP
             if ((e.KeyChar < 48 || e.KeyChar > 57) && e.KeyChar != 8 && e.KeyChar != 9 && e.KeyChar != 13 && e.KeyChar != '.' && e.KeyChar != '-')
             {
                 MessageBox.Show("请输入正确的数字");
-                this.textBox1.Text = "";
                 e.Handled = true;
             }
 
@@ -134,8 +133,9 @@ namespace ERP
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.dateTimeLable);
-            string sqlTotalQty = "SELECT sum(total_qty) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '2019-05-11'";
-            string sqlTotalPer = "SELECT count(*) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='2019-05-11'";
+            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
+            string sqlTotalQty = "SELECT sum(total_qty) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
+            string sqlTotalPer = "SELECT count(*) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='"+ createdDate + "'";
             TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9 };
             ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
 
@@ -213,7 +213,7 @@ namespace ERP
             // Today total purchase initialization
             string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
             string tdtotalsql = "SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
-            this.textBox2.Text = float.Parse("-" + Controller.DataGeting(tdtotalsql,0)).ToString();
+            this.textBox2.Text = ("-" + Controller.DataGeting(tdtotalsql,0)).ToString();
         }
 
         private void BtnPrintPreview_Click(object sender, EventArgs e)
@@ -227,8 +227,10 @@ namespace ERP
             //ERPprintDocument.Print();
             PrintDocument doc = new PrintDocument();
             doc.PrintPage += this.Doc_PrintPage;
-            PrintDialog dlgSettings = new PrintDialog();
-            dlgSettings.Document = doc;
+            PrintDialog dlgSettings = new PrintDialog
+            {
+                Document = doc
+            };
             if (dlgSettings.ShowDialog() == DialogResult.OK)
             {
                 ComboxNewItemCreating();
@@ -266,8 +268,8 @@ namespace ERP
         private void DatabaseUpdate()
         {
             // dailyBalance Table update
-            float tMoney = FmaFloat.converting(TotalLab.Text);
-            float rMoney = FmaFloat.converting(TotalLab2.Text);
+            float rMoney = FmaFloat.converting(TotalLab.Text);
+            float tMoney = FmaFloat.converting(TotalLab2.Text);
             float diff = rMoney - tMoney;
             string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
             string sqlBalance = "INSERT INTO dbo.dailyBalance(theoryMoney,realMoney,difference,balancedate) VALUES('" + tMoney +"','" + rMoney + "','" + diff + "','" + createdDate +"')";
@@ -286,5 +288,16 @@ namespace ERP
 
         }
 
+        private void BtnReload_Click(object sender, EventArgs e)
+        {
+            this.dateTimeLable.Text = DateTime.Today.ToString("D");
+            //yesterday balance initialization
+            string yesBalancesql = "select top 1 [theoryMoney] from dailyBalance order by id desc";
+            this.textBox1.Text = Controller.DataGeting(yesBalancesql, 0);
+            // Today total purchase initialization
+            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
+            string tdtotalsql = "SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
+            this.textBox2.Text = ("-" + Controller.DataGeting(tdtotalsql, 0)).ToString();
+        }
     }
 }

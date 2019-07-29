@@ -67,6 +67,7 @@ namespace ERP
             this.btnPrintPreview = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.ERPprintDocument = new System.Drawing.Printing.PrintDocument();
+            this.btnReload = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -392,11 +393,22 @@ namespace ERP
             // 
             this.ERPprintDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.Doc_PrintPage);
             // 
+            // btnReload
+            // 
+            this.btnReload.Location = new System.Drawing.Point(235, 535);
+            this.btnReload.Name = "btnReload";
+            this.btnReload.Size = new System.Drawing.Size(75, 23);
+            this.btnReload.TabIndex = 20;
+            this.btnReload.Text = "Reload";
+            this.btnReload.UseVisualStyleBackColor = true;
+            this.btnReload.Click += new System.EventHandler(this.BtnReload_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(978, 586);
+            this.Controls.Add(this.btnReload);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnPrintPreview);
             this.Controls.Add(this.groupBox3);
@@ -454,6 +466,7 @@ namespace ERP
         private Button btnPrintPreview;
         private Button btnPrint;
         private System.Drawing.Printing.PrintDocument ERPprintDocument;
+        private Button btnReload;
     }
 }
 

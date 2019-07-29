@@ -21,7 +21,7 @@ namespace ERP
                 {
                     connection.Open();
                 }
-                catch (Exception e)
+                catch (SqlException e)
                 {
                     MessageBox.Show("Exception Occre while connect database:" + e.Message + "\t" + e.GetType());
                 }
