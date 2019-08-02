@@ -2,7 +2,7 @@
 
 namespace ERP
 {
-    partial class Form1
+    partial class Form2
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace ERP
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.CashLabel = new System.Windows.Forms.Label();
             this.CoinLabel = new System.Windows.Forms.Label();
@@ -38,6 +38,12 @@ namespace ERP
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.BalanceBtn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBox12 = new System.Windows.Forms.ComboBox();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.comboBox11 = new System.Windows.Forms.ComboBox();
+            this.comboBox10 = new System.Windows.Forms.ComboBox();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.TotalLab2 = new System.Windows.Forms.Label();
             this.comboBox9 = new System.Windows.Forms.ComboBox();
             this.comboBox8 = new System.Windows.Forms.ComboBox();
@@ -80,7 +86,7 @@ namespace ERP
             this.groupBox1.Controls.Add(this.TotalLab);
             this.groupBox1.Location = new System.Drawing.Point(12, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(176, 513);
+            this.groupBox1.Size = new System.Drawing.Size(176, 486);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -113,7 +119,7 @@ namespace ERP
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(48, 45);
+            this.textBox1.Location = new System.Drawing.Point(38, 50);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(106, 20);
             this.textBox1.TabIndex = 10;
@@ -121,9 +127,9 @@ namespace ERP
             // 
             // BalanceBtn
             // 
-            this.BalanceBtn.Location = new System.Drawing.Point(367, 535);
+            this.BalanceBtn.Location = new System.Drawing.Point(436, 529);
             this.BalanceBtn.Name = "BalanceBtn";
-            this.BalanceBtn.Size = new System.Drawing.Size(75, 23);
+            this.BalanceBtn.Size = new System.Drawing.Size(110, 23);
             this.BalanceBtn.TabIndex = 2;
             this.BalanceBtn.Text = "Balence";
             this.BalanceBtn.UseVisualStyleBackColor = true;
@@ -131,6 +137,12 @@ namespace ERP
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.comboBox12);
+            this.groupBox2.Controls.Add(this.textBox12);
+            this.groupBox2.Controls.Add(this.comboBox11);
+            this.groupBox2.Controls.Add(this.comboBox10);
+            this.groupBox2.Controls.Add(this.textBox11);
+            this.groupBox2.Controls.Add(this.textBox10);
             this.groupBox2.Controls.Add(this.TotalLab2);
             this.groupBox2.Controls.Add(this.comboBox9);
             this.groupBox2.Controls.Add(this.comboBox8);
@@ -154,15 +166,57 @@ namespace ERP
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Location = new System.Drawing.Point(210, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(387, 513);
+            this.groupBox2.Size = new System.Drawing.Size(387, 486);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Transaction Calculation";
             // 
+            // comboBox12
+            // 
+            this.comboBox12.Location = new System.Drawing.Point(180, 380);
+            this.comboBox12.Name = "comboBox12";
+            this.comboBox12.Size = new System.Drawing.Size(155, 21);
+            this.comboBox12.TabIndex = 36;
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(38, 380);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(106, 20);
+            this.textBox12.TabIndex = 35;
+            // 
+            // comboBox11
+            // 
+            this.comboBox11.Location = new System.Drawing.Point(180, 350);
+            this.comboBox11.Name = "comboBox11";
+            this.comboBox11.Size = new System.Drawing.Size(155, 21);
+            this.comboBox11.TabIndex = 34;
+            // 
+            // comboBox10
+            // 
+            this.comboBox10.Location = new System.Drawing.Point(180, 320);
+            this.comboBox10.Name = "comboBox10";
+            this.comboBox10.Size = new System.Drawing.Size(155, 21);
+            this.comboBox10.TabIndex = 33;
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(38, 350);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(106, 20);
+            this.textBox11.TabIndex = 32;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(38, 320);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(106, 20);
+            this.textBox10.TabIndex = 31;
+            // 
             // TotalLab2
             // 
             this.TotalLab2.AutoSize = true;
-            this.TotalLab2.Location = new System.Drawing.Point(45, 414);
+            this.TotalLab2.Location = new System.Drawing.Point(35, 454);
             this.TotalLab2.Name = "TotalLab2";
             this.TotalLab2.Size = new System.Drawing.Size(31, 13);
             this.TotalLab2.TabIndex = 29;
@@ -170,28 +224,28 @@ namespace ERP
             // 
             // comboBox9
             // 
-            this.comboBox9.Location = new System.Drawing.Point(189, 372);
+            this.comboBox9.Location = new System.Drawing.Point(180, 290);
             this.comboBox9.Name = "comboBox9";
             this.comboBox9.Size = new System.Drawing.Size(155, 21);
             this.comboBox9.TabIndex = 27;
             // 
             // comboBox8
             // 
-            this.comboBox8.Location = new System.Drawing.Point(189, 330);
+            this.comboBox8.Location = new System.Drawing.Point(180, 260);
             this.comboBox8.Name = "comboBox8";
             this.comboBox8.Size = new System.Drawing.Size(155, 21);
             this.comboBox8.TabIndex = 26;
             // 
             // comboBox7
             // 
-            this.comboBox7.Location = new System.Drawing.Point(189, 288);
+            this.comboBox7.Location = new System.Drawing.Point(180, 230);
             this.comboBox7.Name = "comboBox7";
             this.comboBox7.Size = new System.Drawing.Size(155, 21);
             this.comboBox7.TabIndex = 25;
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(48, 373);
+            this.textBox9.Location = new System.Drawing.Point(38, 290);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(106, 20);
             this.textBox9.TabIndex = 18;
@@ -199,7 +253,7 @@ namespace ERP
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(48, 331);
+            this.textBox8.Location = new System.Drawing.Point(38, 260);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(106, 20);
             this.textBox8.TabIndex = 17;
@@ -207,7 +261,7 @@ namespace ERP
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(48, 289);
+            this.textBox7.Location = new System.Drawing.Point(38, 230);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(106, 20);
             this.textBox7.TabIndex = 16;
@@ -215,35 +269,35 @@ namespace ERP
             // 
             // comboBox6
             // 
-            this.comboBox6.Location = new System.Drawing.Point(189, 245);
+            this.comboBox6.Location = new System.Drawing.Point(180, 200);
             this.comboBox6.Name = "comboBox6";
             this.comboBox6.Size = new System.Drawing.Size(155, 21);
             this.comboBox6.TabIndex = 24;
             // 
             // comboBox5
             // 
-            this.comboBox5.Location = new System.Drawing.Point(189, 203);
+            this.comboBox5.Location = new System.Drawing.Point(180, 170);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(155, 21);
             this.comboBox5.TabIndex = 23;
             // 
             // comboBox4
             // 
-            this.comboBox4.Location = new System.Drawing.Point(189, 161);
+            this.comboBox4.Location = new System.Drawing.Point(180, 140);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(155, 21);
             this.comboBox4.TabIndex = 22;
             // 
             // comboBox3
             // 
-            this.comboBox3.Location = new System.Drawing.Point(189, 122);
+            this.comboBox3.Location = new System.Drawing.Point(180, 110);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(155, 21);
             this.comboBox3.TabIndex = 21;
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(48, 246);
+            this.textBox6.Location = new System.Drawing.Point(38, 200);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(106, 20);
             this.textBox6.TabIndex = 15;
@@ -251,7 +305,7 @@ namespace ERP
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(48, 204);
+            this.textBox5.Location = new System.Drawing.Point(38, 170);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(106, 20);
             this.textBox5.TabIndex = 14;
@@ -259,7 +313,7 @@ namespace ERP
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(48, 162);
+            this.textBox4.Location = new System.Drawing.Point(38, 140);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(106, 20);
             this.textBox4.TabIndex = 13;
@@ -267,7 +321,7 @@ namespace ERP
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(48, 123);
+            this.textBox3.Location = new System.Drawing.Point(38, 110);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(106, 20);
             this.textBox3.TabIndex = 12;
@@ -275,7 +329,7 @@ namespace ERP
             // 
             // comboBox2
             // 
-            this.comboBox2.Location = new System.Drawing.Point(189, 83);
+            this.comboBox2.Location = new System.Drawing.Point(180, 80);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(155, 21);
             this.comboBox2.TabIndex = 20;
@@ -283,7 +337,7 @@ namespace ERP
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(244, 20);
+            this.label2.Location = new System.Drawing.Point(234, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 13;
@@ -292,7 +346,7 @@ namespace ERP
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(77, 20);
+            this.label1.Location = new System.Drawing.Point(67, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 12;
@@ -300,7 +354,7 @@ namespace ERP
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(48, 84);
+            this.textBox2.Location = new System.Drawing.Point(38, 80);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(106, 20);
             this.textBox2.TabIndex = 11;
@@ -308,9 +362,7 @@ namespace ERP
             // 
             // comboBox1
             // 
-            this.comboBox1.Items.AddRange(new object[] {
-            " Balance of yesterday"});
-            this.comboBox1.Location = new System.Drawing.Point(189, 44);
+            this.comboBox1.Location = new System.Drawing.Point(180, 50);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(155, 21);
             this.comboBox1.TabIndex = 19;
@@ -342,12 +394,13 @@ namespace ERP
             // 
             // groupBox3
             // 
+            this.groupBox3.AutoSize = true;
             this.groupBox3.Controls.Add(this.dateTimeLable);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Location = new System.Drawing.Point(603, 2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(347, 513);
+            this.groupBox3.Size = new System.Drawing.Size(349, 486);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             // 
@@ -371,9 +424,9 @@ namespace ERP
             // 
             // btnPrintPreview
             // 
-            this.btnPrintPreview.Location = new System.Drawing.Point(668, 535);
+            this.btnPrintPreview.Location = new System.Drawing.Point(248, 584);
             this.btnPrintPreview.Name = "btnPrintPreview";
-            this.btnPrintPreview.Size = new System.Drawing.Size(75, 23);
+            this.btnPrintPreview.Size = new System.Drawing.Size(110, 23);
             this.btnPrintPreview.TabIndex = 18;
             this.btnPrintPreview.Text = "Print Review";
             this.btnPrintPreview.UseVisualStyleBackColor = true;
@@ -381,9 +434,9 @@ namespace ERP
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(800, 535);
+            this.btnPrint.Location = new System.Drawing.Point(436, 584);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(75, 23);
+            this.btnPrint.Size = new System.Drawing.Size(110, 23);
             this.btnPrint.TabIndex = 19;
             this.btnPrint.Text = "Print";
             this.btnPrint.UseVisualStyleBackColor = true;
@@ -395,19 +448,19 @@ namespace ERP
             // 
             // btnReload
             // 
-            this.btnReload.Location = new System.Drawing.Point(235, 535);
+            this.btnReload.Location = new System.Drawing.Point(248, 529);
             this.btnReload.Name = "btnReload";
-            this.btnReload.Size = new System.Drawing.Size(75, 23);
+            this.btnReload.Size = new System.Drawing.Size(110, 23);
             this.btnReload.TabIndex = 20;
             this.btnReload.Text = "Reload";
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.BtnReload_Click);
             // 
-            // Form1
+            // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(978, 586);
+            this.ClientSize = new System.Drawing.Size(997, 658);
             this.Controls.Add(this.btnReload);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnPrintPreview);
@@ -415,7 +468,7 @@ namespace ERP
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.BalanceBtn);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
+            this.Name = "Form2";
             this.Text = "Balance";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
@@ -425,6 +478,7 @@ namespace ERP
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -467,6 +521,12 @@ namespace ERP
         private Button btnPrint;
         private System.Drawing.Printing.PrintDocument ERPprintDocument;
         private Button btnReload;
+        private TextBox textBox11;
+        private TextBox textBox10;
+        private ComboBox comboBox12;
+        private TextBox textBox12;
+        private ComboBox comboBox11;
+        private ComboBox comboBox10;
     }
 }
 

@@ -13,10 +13,10 @@ using System.Windows.Forms;
 
 namespace ERP
 {
-    public partial class Form1 : Form
+    public partial class Form2 : Form
     {
         Formatting FmaFloat = new Formatting();
-        public Form1()
+        public Form2()
         {
             InitializeComponent();
             Groupbox1Generating(11);
@@ -104,7 +104,7 @@ namespace ERP
                 connection.Open();
                 SqlCommand sqlCmd = new SqlCommand("SELECT * FROM dbo.cost_class", connection);
                 SqlDataReader sqlReader = sqlCmd.ExecuteReader();
-                ComboBox[] comboxCostType = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
+                ComboBox[] comboxCostType = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9, comboBox10, comboBox11, comboBox12 };
 
                 while (sqlReader.Read())
                 {
@@ -136,8 +136,8 @@ namespace ERP
             string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
             string sqlTotalQty = "SELECT sum(total_qty) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
             string sqlTotalPer = "SELECT count(*) FROM[db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)='"+ createdDate + "'";
-            TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9 };
-            ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
+            TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9,textBox10,textBox11,textBox12 };
+            ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9, comboBox10, comboBox11, comboBox12 };
 
             int n = 0;
             foreach (Control TxtBox in this.groupBox2.Controls)
@@ -203,17 +203,10 @@ namespace ERP
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'db_justposrecycDataSet.cost_class' table. You can move, or remove it, as needed.
+            
             ComboBoxFilling();
-            // dateTime lable initialization
-            this.dateTimeLable.Text = DateTime.Today.ToString("D");
-            //yesterday balance initialization
-            string yesBalancesql = "select top 1 [theoryMoney] from dailyBalance order by id desc";
-            this.textBox1.Text = Controller.DataGeting(yesBalancesql, 0);
-            // Today total purchase initialization
-            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
-            string tdtotalsql = "SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
-            this.textBox2.Text = ("-" + Controller.DataGeting(tdtotalsql,0)).ToString();
+            BlnInitializing();
+
         }
 
         private void BtnPrintPreview_Click(object sender, EventArgs e)
@@ -272,17 +265,25 @@ namespace ERP
             float tMoney = FmaFloat.converting(TotalLab2.Text);
             float diff = rMoney - tMoney;
             string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
-            string sqlBalance = "INSERT INTO dbo.dailyBalance(theoryMoney,realMoney,difference,balancedate) VALUES('" + tMoney +"','" + rMoney + "','" + diff + "','" + createdDate +"')";
-            Controller.DataInsert(sqlBalance);
+            string sqlBalance = "INSERT INTO dbo.dailyBalance(theoryMoney,realMoney,difference,balanceDate) VALUES('" + tMoney +"','" + rMoney + "','" + diff + "','" + createdDate +"')";
+            string sqlstr = "select id from dbo.dailyBalance where convert(varchar(10),balanceDate,120)= '" + createdDate + "'";
+            if (Controller.DataGeting(sqlstr, 0) == "Empty")
+            {
+                Controller.DataInsert(sqlBalance);
+            }
             //Cost Table update
-            TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9 };
-            ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9 };
-            for (int i = 0; i < 9; i++)
+            TextBox[] txGroup2 = new TextBox[] { textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9,textBox10,textBox11,textBox12 };
+            ComboBox[] combGroup2 = new ComboBox[] { comboBox1, comboBox2, comboBox3, comboBox4, comboBox5, comboBox6, comboBox7, comboBox8, comboBox9,comboBox10,comboBox11,comboBox12 };
+            for (int i = 0; i < txGroup2.Length; i++)
             {
                 if (txGroup2[i].Text != "0")
                 {
-                    string sqlCost = "INSERT INTO dbo.cost(cost_amount,cost_name,date) VALUES('" + float.Parse(txGroup2[i].Text) + "','" + combGroup2[i].Text + "','" + createdDate + "')";
-                    Controller.DataInsert(sqlCost);
+                    string sqlQurycost = "Select * from dbo.cost where cost_name = '"+ combGroup2[i].Text + "' and date='" + createdDate + "'";
+                    if (Controller.DataGeting(sqlQurycost, 0) == "Empty")
+                    {
+                        string sqlInsertCost = "INSERT INTO dbo.cost(cost_amount,cost_name,date) VALUES('" + float.Parse(txGroup2[i].Text) + "','" + combGroup2[i].Text + "','" + createdDate + "')";
+                        Controller.DataInsert(sqlInsertCost);
+                    }
                 }
             }
 
@@ -290,14 +291,29 @@ namespace ERP
 
         private void BtnReload_Click(object sender, EventArgs e)
         {
+            BlnInitializing();
+        }
+
+        private void BlnInitializing()
+        {
             this.dateTimeLable.Text = DateTime.Today.ToString("D");
+            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
             //yesterday balance initialization
-            string yesBalancesql = "select top 1 [theoryMoney] from dailyBalance order by id desc";
+            string yesBalancesql = "select top 1 [theoryMoney] from dbo.dailyBalance where convert(varchar(10),balanceDate,120)<'" + createdDate + "'order by id desc";
             this.textBox1.Text = Controller.DataGeting(yesBalancesql, 0);
             // Today total purchase initialization
-            string createdDate = DateTime.Today.ToString("yyyy-MM-dd");
-            string tdtotalsql = "SELECT sum(total) as Total FROM [db_justposrecyc].[dbo].[purchase] where convert(varchar(10),created_date,120)= '" + createdDate + "'";
-            this.textBox2.Text = ("-" + Controller.DataGeting(tdtotalsql, 0)).ToString();
+            string tdtotalsql = "SELECT sum(total) as Total FROM dbo.purchase where convert(varchar(10),created_date,120)= '" + createdDate + "'";
+            string result = Controller.DataGeting(tdtotalsql, 0);
+            if (result == "")
+            {
+                this.textBox2.Text = "0";
+            }
+            else
+            {
+                this.textBox2.Text = ("-" + Controller.DataGeting(tdtotalsql, 0)).ToString();
+            }
+            
         }
+
     }
 }

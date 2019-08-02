@@ -38,20 +38,27 @@ namespace ERP
 
         public static void DataInsert(string sqlcmdstring)
         {
-            try
+            string connectionString = ConfigurationManager.ConnectionStrings["ERPDB"].ToString();
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string connectionString = ConfigurationManager.ConnectionStrings["ERPDB"].ToString();
-                SqlConnection conn = new SqlConnection(connectionString);
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(sqlcmdstring, conn);
-                cmd.ExecuteNonQuery();
-                conn.Close();
+
+                try
+                {
+                    //string connectionString = ConfigurationManager.ConnectionStrings["ERPDB"].ToString();
+                    //SqlConnection conn = new SqlConnection(connectionString);
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand(sqlcmdstring, connection);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Exception Occre while insert data:" + e.Message + "\t" + e.GetType());
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
-            catch (Exception e)
-            {
-                MessageBox.Show("Exception Occre while insert data:" + e.Message + "\t" + e.GetType());
-            }
-           
         }
     }
 }
