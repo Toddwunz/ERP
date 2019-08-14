@@ -156,7 +156,7 @@ namespace ERP
                 labelG3lst.Add(labelitem);
                 labelG3lst[i].Location = new System.Drawing.Point(90, 45 + i * 20);
                 labelG3lst[i].Size = new Size(250, 20);
-                if (i == 1)
+                if (combGroup2[i].Text == "Today Purchase")
                 {
                     labelG3lst[i].Text = txGroup2[i].Text + " (" +Controller.DataGeting(sqlTotalQty,0) +"KG, " + Controller.DataGeting(sqlTotalPer,0) + "PP" + ")";
                 }
@@ -177,7 +177,7 @@ namespace ERP
             float ysDiff =float.Parse(Controller.DataGeting(ysdiffsql,0));
             float toDiff = blnResult - ysDiff;
 
-            List<string> valuelst = new List<string>() { _line,TotalLab2.Text, "实剩",_line,CashLabel.Text,CoinLabel.Text, _shortline, realMoney.ToString("#0.00"), "-" + theoryMoney.ToString("#0.00"), _shortline, blnResult.ToString("#0.00"),ysDiff.ToString("#0.00"),_shortline,toDiff.ToString("#0.00") };
+            List<string> valuelst = new List<string>() { _line,TotalLab2.Text, "实剩",_line,CashLabel.Text,CoinLabel.Text, _shortline, realMoney.ToString("#0.00"), "-" + theoryMoney.ToString("#0.00"), _shortline, blnResult.ToString("#0.00"),"-(" + ysDiff.ToString("#0.00") + ")",_shortline,toDiff.ToString("#0.00") };
 
             for (int i = 0; i < valuelst.Count(); i++)
             {
